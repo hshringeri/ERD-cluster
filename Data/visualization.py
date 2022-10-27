@@ -124,3 +124,4 @@ detection_result_image = run_odt_and_draw_results(
 ima = Image.fromarray(detection_result_image)
 #ima.thumbnail((512, 512), Image.ANTIALIAS)
 ima.save(TEMP_FILE, 'PNG')
+print(detection_result_image)

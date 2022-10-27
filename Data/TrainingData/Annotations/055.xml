@@ -1,86 +1,50 @@
 <annotation>
 	<folder>Images</folder>
-	<filename>006.jpg</filename>
-	<path>C:\Users\ldbau\CS-473-Project-1\Data\TestingData\Images\006.jpg</path>
+	<filename>055.jpg</filename>
+	<path>C:\Users\ldbau\CS-473-Project-1\Data\TrainingData\Images\055.jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
 	<size>
-		<width>3156</width>
-		<height>3752</height>
+		<width>1866</width>
+		<height>1628</height>
 		<depth>3</depth>
 	</size>
 	<segmented>0</segmented>
 	<object>
-		<name>entity</name>
-		<pose>Unspecified</pose>
-		<truncated>1</truncated>
-		<difficult>0</difficult>
-		<bndbox>
-			<xmin>772</xmin>
-			<ymin>1</ymin>
-			<xmax>1788</xmax>
-			<ymax>416</ymax>
-		</bndbox>
-	</object>
-	<object>
 		<name>relationship</name>
 		<pose>Unspecified</pose>
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>344</xmin>
-			<ymin>700</ymin>
-			<xmax>828</xmax>
-			<ymax>1064</ymax>
-		</bndbox>
-	</object>
-	<object>
-		<name>relationship</name>
-		<pose>Unspecified</pose>
-		<truncated>0</truncated>
-		<difficult>0</difficult>
-		<bndbox>
-			<xmin>1100</xmin>
-			<ymin>820</ymin>
-			<xmax>1580</xmax>
-			<ymax>1188</ymax>
-		</bndbox>
-	</object>
-	<object>
-		<name>weakrelationship</name>
-		<pose>Unspecified</pose>
-		<truncated>0</truncated>
-		<difficult>0</difficult>
-		<bndbox>
-			<xmin>1156</xmin>
-			<ymin>1780</ymin>
-			<xmax>1636</xmax>
-			<ymax>2028</ymax>
+			<xmin>25</xmin>
+			<ymin>37</ymin>
+			<xmax>260</xmax>
+			<ymax>156</ymax>
 		</bndbox>
 	</object>
 	<object>
 		<name>entity</name>
 		<pose>Unspecified</pose>
-		<truncated>1</truncated>
+		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>1</xmin>
-			<ymin>1688</ymin>
-			<xmax>1004</xmax>
-			<ymax>2392</ymax>
+			<xmin>214</xmin>
+			<ymin>212</ymin>
+			<xmax>504</xmax>
+			<ymax>500</ymax>
 		</bndbox>
 	</object>
 	<object>
-		<name>weakentity</name>
+		<name>entity</name>
 		<pose>Unspecified</pose>
-		<truncated>1</truncated>
+		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>1804</xmin>
-			<ymin>1268</ymin>
-			<xmax>3156</xmax>
-			<ymax>2512</ymax>
+			<xmin>616</xmin>
+			<ymin>145</ymin>
+			<xmax>928</xmax>
+			<ymax>705</ymax>
 		</bndbox>
 	</object>
 	<object>
@@ -89,10 +53,46 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>188</xmin>
-			<ymin>2728</ymin>
-			<xmax>680</xmax>
-			<ymax>3000</ymax>
+			<xmin>1004</xmin>
+			<ymin>135</ymin>
+			<xmax>1248</xmax>
+			<ymax>252</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>entity</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1353</xmin>
+			<ymin>28</ymin>
+			<xmax>1611</xmax>
+			<ymax>465</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>relationship</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>937</xmin>
+			<ymin>696</ymin>
+			<xmax>1181</xmax>
+			<ymax>817</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>relationship</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>121</xmin>
+			<ymin>758</ymin>
+			<xmax>360</xmax>
+			<ymax>868</ymax>
 		</bndbox>
 	</object>
 	<object>
@@ -101,10 +101,10 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>1100</xmin>
-			<ymin>2648</ymin>
-			<xmax>1848</xmax>
-			<ymax>2876</ymax>
+			<xmin>318</xmin>
+			<ymin>1173</ymin>
+			<xmax>521</xmax>
+			<ymax>1259</ymax>
 		</bndbox>
 	</object>
 	<object>
@@ -113,22 +113,34 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>1016</xmin>
-			<ymin>3008</ymin>
-			<xmax>1760</xmax>
-			<ymax>3228</ymax>
+			<xmin>81</xmin>
+			<ymin>1151</ymin>
+			<xmax>283</xmax>
+			<ymax>1238</ymax>
 		</bndbox>
 	</object>
 	<object>
 		<name>entity</name>
 		<pose>Unspecified</pose>
-		<truncated>1</truncated>
+		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>36</xmin>
-			<ymin>3220</ymin>
-			<xmax>768</xmax>
-			<ymax>3752</ymax>
+			<xmin>635</xmin>
+			<ymin>866</ymin>
+			<xmax>928</xmax>
+			<ymax>1598</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>entity</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1274</xmin>
+			<ymin>1054</ymin>
+			<xmax>1530</xmax>
+			<ymax>1249</ymax>
 		</bndbox>
 	</object>
 </annotation>
