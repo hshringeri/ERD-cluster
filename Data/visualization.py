@@ -99,8 +99,8 @@ def run_odt_and_draw_results(image_path, interpreter, threshold=0.5):
   return original_uint8
 
 
-INPUT_IMAGE_PATH = "Data\\006.jpg"
-DETECTION_THRESHOLD = 0.01
+INPUT_IMAGE_PATH = "Data\\020.jpg"
+DETECTION_THRESHOLD = 0.25
 
 TEMP_FILE = 'Data\image.png'
 #TEMP_FILE2 = 'Data\\fimage.png'
@@ -122,5 +122,5 @@ detection_result_image = run_odt_and_draw_results(
 # Show the detection result
 #Image.fromarray(detection_result_image)
 ima = Image.fromarray(detection_result_image)
-#ima.thumbnail((1024, 1024), Image.ANTIALIAS)
+#ima.thumbnail((512, 512), Image.ANTIALIAS)
 ima.save(TEMP_FILE, 'PNG')
