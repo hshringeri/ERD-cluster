@@ -17,7 +17,8 @@ classes = ['entity', 'weakentity', 'relationship', 'weakrelationship', 'attribut
 label_map = label_map={1: 'entity', 2: 'weakentity', 3: 'relationship', 4: 'weakrelationship', 5: 'attribute'}
 
 # Define a list of colors for visualization
-COLORS = np.random.randint(0, 255, size=(len(classes), 3), dtype=np.uint8)
+#COLORS = np.random.randint(0, 255, size=(len(classes), 3), dtype=np.uint8)
+COLORS = [[73, 229, 11],[182, 31, 193],[0, 0, 0],[24, 143, 173],[232, 144, 85]]
 
 def preprocess_image(image_path, input_size):
   """Preprocess the input image to feed to the TFLite model"""
@@ -99,7 +100,7 @@ def run_odt_and_draw_results(image_path, interpreter, threshold=0.5):
   return original_uint8
 
 
-INPUT_IMAGE_PATH = "Data\\020.jpg"
+INPUT_IMAGE_PATH = "Data\\107.jpg"
 DETECTION_THRESHOLD = 0.25
 
 TEMP_FILE = 'Data\image.png'
@@ -124,4 +125,4 @@ detection_result_image = run_odt_and_draw_results(
 ima = Image.fromarray(detection_result_image)
 #ima.thumbnail((512, 512), Image.ANTIALIAS)
 ima.save(TEMP_FILE, 'PNG')
-print(detection_result_image)
+print(len(detection_result_image))

@@ -37,7 +37,7 @@ test_data = object_detector.DataLoader.from_pascal_voc(
 
 spec = model_spec.get('efficientdet_lite4') # can use 0-4, 0 fast but inprecise
 
-model = object_detector.create(train_data, model_spec=spec, batch_size=1, train_whole_model=True, epochs=200, validation_data=val_data)
+model = object_detector.create(train_data, model_spec=spec, batch_size=1, train_whole_model=True, epochs=100, validation_data=val_data)
 
 model.evaluate(test_data)
 
