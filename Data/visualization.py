@@ -46,6 +46,7 @@ def detect_objects(interpreter, image, threshold):
   classes = np.squeeze(output['output_2'])
   boxes = np.squeeze(output['output_3'])
 
+
   results = []
   for i in range(count):
     if scores[i] >= threshold:
@@ -86,6 +87,8 @@ def run_odt_and_draw_results(image_path, interpreter, threshold=0.5):
     # Find the class index of the current object
     class_id = int(obj['class_id'])
 
+    print(classes[class_id],ymin,xmin,ymax,xmax)
+
     # Draw the bounding box and label on the image
     color = [int(c) for c in COLORS[class_id]]
     cv2.rectangle(original_image_np, (xmin, ymin), (xmax, ymax), color, 2)
@@ -125,4 +128,3 @@ detection_result_image = run_odt_and_draw_results(
 ima = Image.fromarray(detection_result_image)
 #ima.thumbnail((512, 512), Image.ANTIALIAS)
 ima.save(TEMP_FILE, 'PNG')
-print(len(detection_result_image))
