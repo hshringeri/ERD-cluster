@@ -11,7 +11,7 @@ tf.get_logger().setLevel('ERROR')
 from absl import logging
 logging.set_verbosity(logging.ERROR)
 
-MODEL_PATH = 'Data\Models\model#0.tflite'
+MODEL_PATH = 'Data\Models\model#4-100epcohs.tflite'
 DETECTION_THRESHOLD = 0.3
 
 def main():
@@ -51,11 +51,12 @@ def main():
     ima = Image.fromarray(detection_result_image)
     ima.save(TEMP_FILE_PATH, 'PNG')
 
+    print(boxes)
+
     #display image in a different window
     """ show_img = mpimg.imread(TEMP_FILE_PATH)
     imgplot = plt.imshow(show_img)
     plt.show() """
-    print(boxes)
 
 if __name__=='__main__':
     main()

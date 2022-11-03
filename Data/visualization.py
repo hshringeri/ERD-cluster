@@ -10,7 +10,7 @@ logging.set_verbosity(logging.ERROR)
 
 from PIL import Image
 
-model_path = 'Data\Models\model.tflite'
+model_path = 'Data\Models\model#4-100epcohs.tflite'
 
 # Load the labels into a list
 classes = ['entity', 'weakentity', 'relationship', 'weakrelationship', 'attribute']
