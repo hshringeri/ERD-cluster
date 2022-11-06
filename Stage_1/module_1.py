@@ -8,7 +8,7 @@ tf.get_logger().setLevel('ERROR')
 from absl import logging
 logging.set_verbosity(logging.ERROR)
 
-MODEL_PATH = 'Data\Models\model#0.tflite'
+MODEL_PATH = 'Data\Models\model#4.tflite'
 DETECTION_THRESHOLD = 0.3
 
 # Load the labels into a list

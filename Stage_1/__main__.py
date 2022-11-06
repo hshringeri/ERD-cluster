@@ -1,5 +1,5 @@
 import module_1
-import module_2
+#Daimport module_2
 from colors import bcolors
 import os
 
