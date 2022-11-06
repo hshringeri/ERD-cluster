@@ -1,17 +1,6 @@
 # CS-473-Project-1
-
-to create a python environment, run 'python3 -m venv env'
-
-to run a python env, run 'source env/bin/activate'
-(or .\env\Scripts\Activate.ps1) on windows
-
-to escape, run 'deactivate'
-
-Use 'pip install -r requirements.txt' to install all required dependencies
-
-Whe creating a python environment, make sure to run "echo 'env' >> .gitignore"
-with the python enviornment open to exclude it from source control.
-
-Stage_1 cotains all of the initial python files
-
-Tests contains some test python files, feel free to eddit and add more
+Steps to run Stage 1 of our Project:
+1. Be sure to run 'pip install -r requirements.txt' to make sure all dependencies are included
+    i. Pytesseract may need additonal instalation, see: https://github.com/UB-Mannheim/tesseract/wiki
+2. Run 'python __main__.py' in the Stage_1 folder (or 'python .\Stage_1\'). The terminal will ask for a path to an image. The program will save a copy of the image with '-labeled' appended to the name in the same location. This image will be labeled with bounding boxes identifying each object within the ERD graph.
+3. The terminal will output the list of ERD objects and their contents.
