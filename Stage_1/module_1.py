@@ -2,10 +2,14 @@ import cv2
 import numpy as np
 import tensorflow as tf
 assert tf.__version__.startswith('2')
+from PIL import Image
 
 tf.get_logger().setLevel('ERROR')
 from absl import logging
 logging.set_verbosity(logging.ERROR)
+
+MODEL_PATH = 'Data\Models\model#0.tflite'
+DETECTION_THRESHOLD = 0.3
 
 # Load the labels into a list
 classes = ['entity', 'weakentity', 'relationship', 'weakrelationship', 'attribute']
@@ -98,3 +102,24 @@ def run_odt_and_draw_results(image_path, interpreter, threshold=0.5):
   # Return the final image
   original_uint8 = original_image_np.astype(np.uint8)
   return original_uint8, box_list
+
+def run(INPUT_IMAGE_PATH, TEMP_FILE_PATH):
+      #creates a copy of the image
+    im = Image.open(INPUT_IMAGE_PATH)
+    im.save(TEMP_FILE_PATH, 'PNG')
+
+    # Load the TFLite model
+    interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
+    interpreter.allocate_tensors()
+
+    # Run inference and draw detection result on the local copy of the original file
+    detection_result_image, boxes = run_odt_and_draw_results(
+        TEMP_FILE_PATH,
+        interpreter,
+        threshold=DETECTION_THRESHOLD
+    )
+
+    # Show the detection result
+    ima = Image.fromarray(detection_result_image)
+    ima.save(TEMP_FILE_PATH, 'PNG')
+    return boxes

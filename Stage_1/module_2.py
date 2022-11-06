@@ -2,7 +2,7 @@ import cv2
 import pytesseract
 import numpy as np
 import copy
-
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.ext'
 def open_image(img_path, coords):
     img = cv2.imread(img_path)
     crop = img[coords[2]:coords[4], coords[1]:coords[3]]
