@@ -1,19 +1,40 @@
 import cv2
 import pytesseract
+import os
 import numpy as np
-import copy
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.ext'
+
 def open_image(img_path, coords):
     img = cv2.imread(img_path)
     crop = img[coords[2]:coords[4], coords[1]:coords[3]]
     return crop
+
+def zoom_at(img, zoom, coord=None):
+    """
+    Simple image zooming without boundary checking.
+    Centered at "coord", if given, else the image center.
+
+    img: numpy.ndarray of shape (h,w,:)
+    zoom: float
+    coord: (float, float)
+    """
+    # Translate to zoomed coordinates
+    h, w = [ zoom * i for i in img.shape ]
+    
+    if coord is None: cx, cy = w/2, h/2
+    else: cx, cy = [ zoom*c for c in coord ]
+    
+    img = cv2.resize( img, (0, 0), fx=zoom, fy=zoom)
+    img = img[ int(round(cy - h/zoom * .3)) : int(round(cy + h/zoom * .3)),
+               int(round(cx - w/zoom * .6)) : int(round(cx + w/zoom * .6))]
+    
+    return img
 
 def preprocess_image(img, object_type, i):
     scale_percent = 200
     width = int(img.shape[1] * scale_percent / 100)
     height = int(img.shape[0] * scale_percent / 100)
     dim = (width, height)
-
+    
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
 
@@ -21,35 +42,39 @@ def preprocess_image(img, object_type, i):
     img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
     if object_type == "attribute":
+        blur = cv2.GaussianBlur(img, (3,3), 10)
         ellipse_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (200, 1))
-        remove_circle = cv2.morphologyEx(img, cv2.MORPH_OPEN, ellipse_kernel, iterations=1)
+        remove_circle = cv2.morphologyEx(blur, cv2.MORPH_OPEN, ellipse_kernel, iterations=1)
         cnts = cv2.findContours(remove_circle, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if len(cnts) == 2 else cnts[1]
         for c in cnts:
             cv2.drawContours(img, [c], -1, (255,255,255), 5)
     elif object_type == "weakrelationship":
-        thresh_inv = cv2.threshold(img, 0, 255,cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
-        kernel = np.array([[0, 0, -1],
-                           [0, -1, 0],
-                           [-1, 0, 0]], dtype=np.uint8)
-        opening = cv2.morphologyEx(thresh_inv, cv2.MORPH_OPEN, kernel, iterations=1)
-        cnts = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        img = zoom_at(img, 1.2)
+    elif object_type == "entity" or object_type == "weakentity":
+        horizontal_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (25,1))
+        remove_horizontal = cv2.morphologyEx(img, cv2.MORPH_CLOSE, horizontal_kernel, iterations=3)
+        cnts = cv2.findContours(remove_horizontal, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+        mask = np.zeros(img.shape, np.uint8)
         for c in cnts:
-            area = cv2.contourArea(c)
-            if area < 500:
-                cv2.drawContours(opening, [c], -1, (0,0,0), -1)
+            cv2.drawContours(mask, [c], -1, (255,255,255),2)
+        img_dst = cv2.inpaint(img, mask, 3, cv2.INPAINT_TELEA)
 
-        # cv2.imwrite("opening" + str(i) +".jpg", opening)
-        img = cv2.bitwise_xor(img, opening)
 
-    # cv2.imwrite("image" + str(i) +".jpg", img)
+    cv2.imwrite("image" + str(i) +".png", img)
 
     return img
 
 def get_text_from_image(img):
     custom_config = r'--oem 3 --psm 11'
     return pytesseract.image_to_string(img, config=custom_config)
+
+# def clean_up_text(texts):
+#     cleaned_up = []
+#     for text in texts:
+        
+#     return cleaned_up
 
 def get_all_text_from_image(img_path, all_coords):
     all_text = []
@@ -60,5 +85,4 @@ def get_all_text_from_image(img_path, all_coords):
         all_text.append([coord[0], text])
     return all_text
 
-
-print(get_all_text_from_image("Data/TestingData/Images/126.jpg", [['entity', 275, 475, 462, 571], ['attribute', 142, 579, 213, 618], ['weakrelationship', 613, 149, 715, 201], ['weakrelationship', 324, 45, 415, 96], ['attribute', 528, 580, 600, 618], ['weakrelationship', 553, 496, 675, 555], ['attribute', 628, 579, 700, 618], ['weakrelationship', 461, 149, 583, 201], ['weakrelationship', 308, 159, 398, 222], ['weakrelationship', 355, 345, 463, 407], ['weakrelationship', 70, 495, 190, 555], ['attribute', 42, 579, 115, 619], ['weakrelationship', 82, 171, 178, 232], ['weakentity', 457, 2, 722, 136], ['weakentity', 456, 215, 724, 361], ['weakentity', 2, 285, 261, 428], ['entity', 8, 23, 265, 118]]))
+# print(get_all_text_from_image("../Collection1/045.png", [['attribute', 1741, 682, 2154, 843], ['relationship', 1663, 281, 2023, 559], ['weakrelationship', 2829, 1245, 3313, 1483], ['weakentity', 1869, 1964, 3024, 2946], ['weakrelationship', 1631, 1323, 2099, 1561], ['weakrelationship', 2, 1282, 485, 1530], ['weakentity', 232, 1862, 1317, 2591], ['entity', 2168, 262, 3187, 694], ['entity', 405, 264, 1433, 1165]]))
