@@ -1,3 +1,4 @@
+# Created By: Youssuf Elshall, Lucas Baumgartner, Hardhi Shringeri, and Prajesh Sharma
 import cv2
 import pytesseract
 import os

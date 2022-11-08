@@ -1,3 +1,5 @@
+# Created By: Youssuf Elshall, Lucas Baumgartner, Hardhi Shringeri, and Prajesh Sharma
+
 from absl import logging
 from sys import platform
 from PIL import Image

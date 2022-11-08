@@ -1,3 +1,4 @@
+# Created By: Youssuf Elshall, Lucas Baumgartner, Hardhi Shringeri, and Prajesh Sharma
 import module_1
 import module_2
 from colors import bcolors
