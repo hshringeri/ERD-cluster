@@ -8,30 +8,42 @@ def open_image(img_path, coords):
     crop = img[coords[2]:coords[4], coords[1]:coords[3]]
     return crop
 
-def unsharp_mask(image, kernel_size=(5, 5), sigma=1.0, amount=1.0, threshold=0):
-    blurred = cv2.GaussianBlur(image, kernel_size, sigma)
-    sharpened = float(amount + 1) * image - float(amount) * blurred
-    sharpened = np.maximum(sharpened, np.zeros(sharpened.shape))
-    sharpened = np.minimum(sharpened, 255 * np.ones(sharpened.shape))
-    sharpened = sharpened.round().astype(np.uint8)
-    if threshold > 0:
-        low_contrast_mask = np.absolute(image - blurred) < threshold
-        np.copyto(sharpened, image, where=low_contrast_mask)
-    return sharpened
-
 def preprocess_image(img, object_type, i):
+    scale_percent = 200
+    width = int(img.shape[1] * scale_percent / 100)
+    height = int(img.shape[0] * scale_percent / 100)
+    dim = (width, height)
+
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+
+    img = cv2.GaussianBlur(img, (3,3), 0)
     img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
     if object_type == "attribute":
-        ellipse_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (100, 1))
+        ellipse_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (200, 1))
         remove_circle = cv2.morphologyEx(img, cv2.MORPH_OPEN, ellipse_kernel, iterations=1)
         cnts = cv2.findContours(remove_circle, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if len(cnts) == 2 else cnts[1]
         for c in cnts:
             cv2.drawContours(img, [c], -1, (255,255,255), 5)
     elif object_type == "weakrelationship":
-        j = 1 #noop
+        thresh_inv = cv2.threshold(img, 0, 255,cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+        kernel = np.array([[0, 0, -1],
+                           [0, -1, 0],
+                           [-1, 0, 0]], dtype=np.uint8)
+        opening = cv2.morphologyEx(thresh_inv, cv2.MORPH_OPEN, kernel, iterations=1)
+        cnts = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+        for c in cnts:
+            area = cv2.contourArea(c)
+            if area < 500:
+                cv2.drawContours(opening, [c], -1, (0,0,0), -1)
+
+        # cv2.imwrite("opening" + str(i) +".jpg", opening)
+        img = cv2.bitwise_xor(img, opening)
+
+    # cv2.imwrite("image" + str(i) +".jpg", img)
 
     return img
 
