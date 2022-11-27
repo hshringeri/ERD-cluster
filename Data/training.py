@@ -35,7 +35,7 @@ test_data = object_detector.DataLoader.from_pascal_voc(
     label_map={1: 'entity', 2: 'weakentity', 3: 'relationship', 4: 'weakrelationship', 5: 'attribute'}
 )
 
-spec = model_spec.get('efficientdet_lite0') # can use 0-4, 0 fast but inprecise
+spec = model_spec.get('efficientdet_lite4') # can use 0-4, 0 fast but inprecise
 
 model = object_detector.create(train_data, model_spec=spec, batch_size=20, train_whole_model=True, epochs=100, validation_data=val_data)
 

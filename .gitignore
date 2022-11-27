@@ -1,3 +1,4 @@
 env
 .git_token
 Stage_1/__pycache__/
+.venv
