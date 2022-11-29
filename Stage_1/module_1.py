@@ -11,7 +11,7 @@ assert tf.__version__.startswith('2')
 tf.get_logger().setLevel('ERROR')
 logging.set_verbosity(logging.ERROR)
 
-MODEL_PATH = 'Data\Models\model#4.tflite' if platform == "win32" else 'Data/Models/model#4.tflite'
+MODEL_PATH = 'Data\Models\model4v2.tflite' if platform == "win32" else 'Data/Models/model#4.tflite'
 DETECTION_THRESHOLD = 0.3
 
 # Load the labels into a list
