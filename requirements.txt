@@ -7,3 +7,4 @@ tflite_model_maker==0.4.2
 tflite_support==0.4.3
 setuptools==58
 pytqt5
+pycocotools
