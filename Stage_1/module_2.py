@@ -101,15 +101,19 @@ def get_text_from_image(img):
 
 def clean_up_text(texts):
     cleaned_up = []
-
     for text in texts:
         text[1] = re.sub('\n', ' ', text[1])
         text[1] = " ".join(text[1].split())
         text[1] = re.sub(r'\b\w{1,2}\b', '', text[1])
-        cleaned_up.append([text[0], text[1].strip()])
-
+        text_list = text[1].split(' ')
+        a = []
+        while '' in text_list:
+            text_list.remove('')
+        a.append(text[0])
+        for x in text_list:
+            a.append(x)
+        cleaned_up.append(a)
     return cleaned_up
-
 
 def get_all_text_from_image(img_path, all_coords):
     all_text = []

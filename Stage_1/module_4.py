@@ -1,20 +1,47 @@
-from nltk.stem import *
-from nltk.tokenize import word_tokenize
-stopwords = ['I', 'a', 'about', 'an', 'are', 'as', 'at', 'be', 'by',
-    'com','for', 'from', 'how', 'in', 'is', 'it', 'of', 'on', 'or',
-    'that', 'the', 'this', 'to', 'was', 'what', 'when', 'where', 'who',
-    'will', 'with','the', 'www', '[', ']', '.', ',', '"', ';', ':', '\'']
-stemmer = PorterStemmer()
+import module_3
+import gensim
+from gensim import corpora
+from gensim.utils import simple_preprocess
+import math
+from sklearn.cluster import KMeans
+
 test = [[['attribute', 'start_date'], ['attribute', 'starting_mileage'], ['attribute', 'end_date'], ['relationship', 'Rents'], ['relationship', 'Owns'], ['weakrelationship', 'Recalled'], ['weakrelationship', 'For'], ['weakrelationship', 'Writes'], ['weakrelationship', 'Involved'], ['weakrelationship', 'Involved'], ['weakrelationship', 'Pays'], ['entity', 'Customer', 'customerid', 'name', 'credit_card_no'], ['entity', 'Car', 'PKVIN_no', 'make', 'model', 'year', 'current_mileage'], ['weakentity', 'Review', 'date', 'time', 'description', 'num_of_stars'], ['entity', 'Driver', 'licenseno', 'state', 'name', 'age'], ['weakentity', 'Recall', 'date', 'description'], ['weakentity', 'Rent_Installment', 'date', 'amount']],
 [['attribute', 'start_date'], ['attribute', 'starting_mileage'], ['attribute', 'end_date'], ['relationship', 'Rents'], ['relationship', 'Owns'], ['weakrelationship', 'Recalled'], ['weakrelationship', 'For'], ['weakrelationship', 'Writes'], ['weakrelationship', 'Involved'], ['weakrelationship', 'Involved'], ['weakrelationship', 'Pays'], ['entity', 'Customer', 'customerid', 'name', 'credit_card_no'], ['entity', 'Car', 'PKVIN_no', 'make', 'model', 'year', 'current_mileage'], ['weakentity', 'Review', 'date', 'time', 'description', 'num_of_stars'], ['entity', 'Driver', 'licenseno', 'state', 'name', 'age'], ['weakentity', 'Recall', 'date', 'description'], ['weakentity', 'Rent_Installment', 'date', 'amount']]]
 
-def stem(word_list):
-    lists = []
-    for x in test:
-        a = []
-        for y in x:
-            for z in y:
-                if z not in stopwords:
-                    a.append(z)
-        lists.append(a)
-    return(lists)
+#Returns a list of dictionarys with the key as the term number and the value
+#  as the term frequecny, using log(tf)+1 , and an example input given above
+#  if a key is not found, its value is 0
+def term_feq_matrix(erd_list):
+    tfm = []
+    dictionary = corpora.Dictionary()
+    BOW_corpus = [dictionary.doc2bow(doc, allow_update=True) for doc in erd_list]
+    for x in range(0, len(BOW_corpus)):
+        doc = {}
+        for y in range(0, len(BOW_corpus[x])):
+            if BOW_corpus[x][y][1] >= 1:
+                doc.update({BOW_corpus[x][y][0] : (math.log(BOW_corpus[x][y][1]))+1})
+            else:
+                doc.update({BOW_corpus[x][y][0] : BOW_corpus[x][y][1]})
+        tfm.append(doc)
+    return tfm
+
+def kmeans_plusplus(n_clusters, tfm):
+    kmeans = KMeans(n_clusters=n_clusters).fit(tfm)
+    return kmenas
+
+def tfm_cleanup(tfm):
+    doc = []
+    keys = []
+    for x in tfm:
+        for y in x.keys():
+            if y not in keys:
+                keys.append(y)
+    for x in range(0, len(tfm)):
+        t = []
+        for k in keys:
+            t.append(tfm[x].get(k, default=0))
+        doc.append(t)
+    return doc
+
+
+print(tfm_cleanup(term_feq_matrix(module_3.stem(test))))
