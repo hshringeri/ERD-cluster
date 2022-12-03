@@ -27,8 +27,13 @@ def term_feq_matrix(erd_list):
 
 def kmeans_plusplus(n_clusters, tfm):
     kmeans = KMeans(n_clusters=n_clusters).fit(tfm)
-    return kmenas
+    return kmeans
 
+#Takes the term frequency matrix return from
+# term_feq_matrix(erd_list) and converts it from
+# a list of dictionarys ([{},{}], where each dictionary
+# is the tfm for each diagram) and turns it into a list
+# of lists ([[],[]]) of eqaul sizes
 def tfm_cleanup(tfm):
     doc = []
     keys = []
@@ -39,9 +44,9 @@ def tfm_cleanup(tfm):
     for x in range(0, len(tfm)):
         t = []
         for k in keys:
-            t.append(tfm[x].get(k, default=0))
+            t.append(tfm[x].get(k, 0))
         doc.append(t)
     return doc
 
 
-print(tfm_cleanup(term_feq_matrix(module_3.stem(test))))
+print(kmeans_plusplus(2, tfm_cleanup(term_feq_matrix(module_3.stem(test)))))
