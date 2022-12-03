@@ -28,11 +28,17 @@ def main():
 
     img_names = [f for f in os.listdir(dir_path) if isfile(join(dir_path, f))]
 
+    #Stores a list of image items in the format:
+    # [['imgname', 'boxes_for_img', 'text_from_img'],[~]]
     images = []
+    #Stores a list of just the text for module 4, format:
+    # [['firstimg_text'],[~]]
+    texts = []
     for x in img_names:
         boxes = module_1.run(module_1.run(join(dir_path, f), '', False))
         text = module_2.get_all_text_from_image(join(dir_path, f), boxes)
         images.append([x, boxes, text])
+        texts.append(text)
 
 
 if __name__=='__main__':
