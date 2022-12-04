@@ -2,16 +2,18 @@
 
 import module_1
 import module_2
+import module_3
+
 from colors import bcolors
 import os
 from sys import platform
 
 def main():
     #User inputs a path to a file
-    MODULE = input(bcolors.OKCYAN+'Enter which module to run (1 or 2): '+bcolors.ENDC)
-    while MODULE != "1" and MODULE != "2":
-        print(bcolors.WARNING+'Module input does not equal 1 or 2'+bcolors.ENDC)
-        MODULE = input(bcolors.OKCYAN+'Enter which module to run (1 or 2): '+bcolors.ENDC)
+    MODULE = input(bcolors.OKCYAN+'Enter which module to run (1, 2, 3, 4, 5): '+bcolors.ENDC)
+    while MODULE != "1" and MODULE != "2" and MODULE != "3" and MODULE != "4" and MODULE != "5":
+        print(bcolors.WARNING+'Module input does not equal 1, 2, 3, 4, or 5'+bcolors.ENDC)
+        MODULE = input(bcolors.OKCYAN+'Enter which module to run (1, 2, 3, 4, 5): '+bcolors.ENDC)
 
     INPUT_IMAGE_PATH = input(bcolors.OKCYAN+'Enter a valid filepath to Img: '+bcolors.ENDC)
     #If it is invalid, loop until a vaid path is found
@@ -34,6 +36,11 @@ def main():
         boxes = module_1.run(INPUT_IMAGE_PATH, TEMP_FILE_PATH, False)
         text = module_2.get_all_text_from_image(INPUT_IMAGE_PATH, boxes)
         print(text)
+    elif MODULE == "3":
+        boxes = module_1.run(INPUT_IMAGE_PATH, TEMP_FILE_PATH, False)
+        text = module_2.get_all_text_from_image(INPUT_IMAGE_PATH, boxes)
+        processed_text = module_3.process_text(text)
+        print(processed_text)
 
 
 if __name__=='__main__':
