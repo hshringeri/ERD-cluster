@@ -25,6 +25,7 @@ def main():
         print('invalid path')
         exit()
     n_clusters = int(inputs[1])
+    #If the number of clusters is 0, use Silhouette score in Module 4
 
     img_names = [f for f in os.listdir(dir_path) if isfile(join(dir_path, f))]
 

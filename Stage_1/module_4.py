@@ -4,6 +4,7 @@ from gensim import corpora
 from gensim.utils import simple_preprocess
 import math
 from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 
 test = [[['attribute', 'start_date'], ['attribute', 'starting_mileage'], ['attribute', 'end_date'], ['relationship', 'Rents'], ['relationship', 'Owns'], ['weakrelationship', 'Recalled'], ['weakrelationship', 'For'], ['weakrelationship', 'Writes'], ['weakrelationship', 'Involved'], ['weakrelationship', 'Involved'], ['weakrelationship', 'Pays'], ['entity', 'Customer', 'customerid', 'name', 'credit_card_no'], ['entity', 'Car', 'PKVIN_no', 'make', 'model', 'year', 'current_mileage'], ['weakentity', 'Review', 'date', 'time', 'description', 'num_of_stars'], ['entity', 'Driver', 'licenseno', 'state', 'name', 'age'], ['weakentity', 'Recall', 'date', 'description'], ['weakentity', 'Rent_Installment', 'date', 'amount']],
 [['attribute', 'start_date'], ['attribute', 'starting_mileage'], ['attribute', 'end_date'], ['relationship', 'Rents'], ['relationship', 'Owns'], ['weakrelationship', 'Recalled'], ['weakrelationship', 'For'], ['weakrelationship', 'Writes'], ['weakrelationship', 'Involved'], ['weakrelationship', 'Involved'], ['weakrelationship', 'Pays'], ['entity', 'Customer', 'customerid', 'name', 'credit_card_no'], ['entity', 'Car', 'PKVIN_no', 'make', 'model', 'year', 'current_mileage'], ['weakentity', 'Review', 'date', 'time', 'description', 'num_of_stars'], ['entity', 'Driver', 'licenseno', 'state', 'name', 'age'], ['weakentity', 'Recall', 'date', 'description'], ['weakentity', 'Rent_Installment', 'date', 'amount']]]
@@ -47,6 +48,10 @@ def tfm_cleanup(tfm):
             t.append(tfm[x].get(k, 0))
         doc.append(t)
     return doc
+
+def silhouette_score():
+    #TODO
+    return k_clusters
 
 
 print(kmeans_plusplus(2, tfm_cleanup(term_feq_matrix(module_3.stem(test)))))
