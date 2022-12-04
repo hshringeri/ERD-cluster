@@ -26,13 +26,16 @@ def term_feq_matrix(erd_list):
         tfm.append(doc)
     return tfm
 
+#TODO
 def kmeans_plusplus(n_clusters, tfm):
-    kmeans = KMeans(n_clusters=n_clusters).fit(tfm)
+    if n_clusters == 0:
+        n_clusters = silhouette_score(tfm) #need to finish
+    #can use scikit learn's kmeans
     return kmeans
 
 #Takes the term frequency matrix return from
 # term_feq_matrix(erd_list) and converts it from
-# a list of dictionarys ([{},{}], where each dictionary
+# a list of dictionarys ([{},{}), where each dictionary
 # is the tfm for each diagram) and turns it into a list
 # of lists ([[],[]]) of eqaul sizes
 def tfm_cleanup(tfm):
