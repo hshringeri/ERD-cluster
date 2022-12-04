@@ -32,7 +32,6 @@ def main():
         print(boxes)
     elif MODULE == "2":
         boxes = module_1.run(INPUT_IMAGE_PATH, TEMP_FILE_PATH, False)
-        print(boxes)
         text = module_2.get_all_text_from_image(INPUT_IMAGE_PATH, boxes)
         print(text)
 

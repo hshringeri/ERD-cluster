@@ -6,9 +6,9 @@
 2. Create a Python environment using `python3 -m venv env`.
 3. Run a Python environment using `source env/bin/activate` for MacOS and Linux, or `.\env\Scripts\Activate.ps1` on Windows.
 4. Install dependencies using `pip install -r requirements.txt`
-
+5. You need to have an AWS account and have an [access key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-about)
 ### Running stage 1
-While in the project's root directory, run 'python3 ./Stage_1/__main__.py':
+While in the project's root directory, run 'AWS_ACCESS_KEY_ID="" AWS_SECRET_ACCESS_KEY="" python3 ./Stage_1/__main__.py':
     i. It will prompt you to choose a module to run.
     ii. Then, it will prompt for a path to an image relative to the project's root directory.
     iii. If module 1 is chosen, the Python script will save a copy of the image with '-labeled' appended to the name in the same location which contains labels for the objects it detected in the image.

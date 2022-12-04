@@ -3,3 +3,4 @@ env
 Stage_1/__pycache__/
 .venv
 .conda
+AWS_ENV
