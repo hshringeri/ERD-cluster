@@ -4,6 +4,7 @@ import module_1
 import module_2
 import module_3
 import module_4
+import module_5
 
 from colors import bcolors
 import os
@@ -52,6 +53,9 @@ def main():
     elif MODULE == "4":
         module_4.runkmeans(PARAMETERS_FILE_PATH)
         print("Clustering is outputed to base_line_clusters.txt")
+    elif MODULE == "5":
+        module_5.runkmeans(PARAMETERS_FILE_PATH)
+        print("Clustering is outputed to advanced_clusters.txt")
 
 
 if __name__=='__main__':

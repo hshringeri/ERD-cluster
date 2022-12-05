@@ -7,64 +7,8 @@ import module_3
 import random
 import numpy
 import copy
-
-
-def updateCentroids(belongsTo, items, k):
-    clusters = [[] for i in range(k)]
-
-    for i in range(len(belongsTo)):
-        clusters[belongsTo[i]].append(items[i])
-
-    new_centroids = [numpy.mean(numpy.array(cluster), axis=0).tolist() if len(
-        cluster) > 0 else random.choice(items) for cluster in clusters]
-
-    return new_centroids
-
-
-def classify(centroids, item):
-    minimum = sys.maxsize
-    index = -1
-
-    for i in range(len(centroids)):
-        dis = math.dist(item, centroids[i])
-
-        if (dis < minimum):
-            minimum = dis
-            index = i
-
-    return index
-
-
-def calculateMeans(items, centroids, maxIterations=100000):
-    belongsTo = [-1 for i in range(len(items))]
-    iterations = 0
-    old_centroids = None
-
-    print("Calculating clusters using k-means++...")
-
-    while not should_stop(old_centroids, centroids, iterations, maxIterations):
-        iterations += 1
-        old_centroids = copy.deepcopy(centroids)
-
-        for i in range(len(items)):
-            belongsTo[i] = classify(centroids, items[i])
-
-        centroids = updateCentroids(belongsTo, items, len(centroids))
-
-    return centroids, belongsTo
-
-
-def should_stop(old_centroids, centroids, iterations, maxIterations):
-    if iterations > maxIterations:
-        return True
-    if old_centroids == None:
-        return False
-
-    for i in range(len(old_centroids)):
-        for j in range(len(old_centroids[i])):
-            if not math.isclose(old_centroids[i][j], centroids[i][j]):
-                return False
-    return True
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 
 
 def create_document_term_matrix(docs_text):
@@ -122,12 +66,13 @@ def runkmeans(parameters_file):
 
     dt_matrix, order = create_document_term_matrix(docs_text)
 
-    centroids = random.choices(dt_matrix[1:], k=k)
-    means, belongsTo = calculateMeans(dt_matrix[1:], centroids)
+    kmean = KMeans(n_clusters=k)
+    kmean.fit(numpy.array(dt_matrix[1:]))
+    kmean.labels_
 
     output = [[] for i in range(k)]
 
-    for i, cluster in enumerate(belongsTo):
+    for i, cluster in enumerate(kmean.labels_):
         output[cluster].append(order[i])
 
     with open("base_line_clusters.txt", "w") as output_file:
