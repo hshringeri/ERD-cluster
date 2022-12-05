@@ -6,6 +6,7 @@ import module_2
 import module_3
 import random
 import numpy
+import copy
 
 # def euclideanDistance(x, y):
 #     S = 0
@@ -15,16 +16,16 @@ import numpy
 #     return math.sqrt(S)
 
 
-def updateMean(belongsTo, items, index):
-    cluster = []
+def updateCentroids(belongsTo, items, k):
+    clusters = [[] for i in range(k)]
 
     for i in range(len(belongsTo)):
-        if belongsTo[i] == index:
-            cluster.append(items[i])
+        clusters[belongsTo[i]].append(items[i])
 
-    new_centroid = numpy.mean(numpy.array(cluster), axis=0).tolist()
+    new_centroids = [numpy.mean(numpy.array(cluster), axis=0).tolist() if len(cluster) > 0 else random.choice(items) for cluster in clusters]
+    print(new_centroids)
 
-    return new_centroid
+    return new_centroids
 
 
 def classify(centroids, item):
@@ -42,36 +43,32 @@ def classify(centroids, item):
 
 
 def calculateMeans(items, centroids, maxIterations=100000):
-    clusterSizes = [0 for i in range(len(centroids))]
-
     # Specify the cluster each document belongs to
     belongsTo = [-1 for i in range(len(items))]
 
+    print("Initial cluster centroids: {}".format(centroids))
     print("Calculating k-means++...")
     for e in range(maxIterations):
-        noChange = True
         for i in range(len(items)):
-            item = items[i]
+            belongsTo[i] = classify(centroids, items[i])
+            print("Assigned document #{} to cluster #{}".format(i, belongsTo[i]))
 
-            initial_index = belongsTo[i]
-            # Find out which cluster the document belongs to
-            index = classify(centroids, item)
+        old_centroids = copy.deepcopy(centroids)
+        centroids = updateCentroids(belongsTo, items, len(centroids))
 
-            if (index != belongsTo[i]):
-                noChange = False
-                belongsTo[i] = index
-
-                if initial_index != -1:
-                    clusterSizes[initial_index] -= 1
-                clusterSizes[index] += 1
-
-            centroids[index] = updateMean(belongsTo, items, index)
-
-        if (noChange):
+        print("Cluster assignments for each document: {}".format(belongsTo))
+        if (should_stop(old_centroids, centroids)):
             break
 
     return centroids, belongsTo
 
+
+def should_stop(old_centroids, centroids):
+    for i in range(len(old_centroids)):
+        for j in range(len(old_centroids[i])):
+            if not math.isclose(old_centroids[i][j], centroids[i][j]):
+                return True
+    return False
 
 def create_document_term_matrix(docs_text):
     all_text = ""
