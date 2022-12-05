@@ -37,6 +37,9 @@ spec = model_spec.get('efficientdet_lite4') # can use 0-4, 0 fast but inprecise
 
 model = object_detector.create(train_data, model_spec=spec, batch_size=1, train_whole_model=True, epochs=150, validation_data=val_data)
 
-model.evaluate(test_data)
+f = opne('results.txt', 'w')
+a = model.evaluate(test_data)
+f.write(a)
+f.close
 
 model.export(export_dir='Data\Models')
