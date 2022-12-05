@@ -3,31 +3,36 @@ import sys
 import os
 import module_1
 import module_2
+import module_3
 import random
+import numpy
 
-def euclideanDistance(x, y):
-    S = 0
-    for i in range(len(x)):
-        S += math.pow(x[i]-y[i], 2)
+# def euclideanDistance(x, y):
+#     S = 0
+#     for i in range(len(x)):
+#         S += math.pow(x[i]-y[i], 2)
 
-    return math.sqrt(S)
-
-
-def updateMean(n, mean, item):
-    for i in range(len(mean)):
-        m = mean[i]
-        m = (m*(n-1)+item[i])/float(n)
-        mean[i] = round(m, 3)
-
-    return mean
+#     return math.sqrt(S)
 
 
-def classify(means, item):
+def updateMean(belongsTo, items, index):
+    cluster = []
+
+    for i in range(len(belongsTo)):
+        if belongsTo[i] == index:
+            cluster.append(items[i])
+
+    new_centroid = numpy.mean(numpy.array(cluster), axis=0).tolist()
+
+    return new_centroid
+
+
+def classify(centroids, item):
     minimum = sys.maxsize
     index = -1
 
-    for i in range(len(means)):
-        dis = euclideanDistance(item, means[i])
+    for i in range(len(centroids)):
+        dis = math.dist(item, centroids[i])
 
         if (dis < minimum):
             minimum = dis
@@ -36,11 +41,11 @@ def classify(means, item):
     return index
 
 
-def calculateMeans(items, means, maxIterations=100000):
-    clusterSizes = [0 for i in range(len(means))]
+def calculateMeans(items, centroids, maxIterations=100000):
+    clusterSizes = [0 for i in range(len(centroids))]
 
     # Specify the cluster each document belongs to
-    belongsTo = [0 for i in range(len(items))]
+    belongsTo = [-1 for i in range(len(items))]
 
     print("Calculating k-means++...")
     for e in range(maxIterations):
@@ -48,24 +53,24 @@ def calculateMeans(items, means, maxIterations=100000):
         for i in range(len(items)):
             item = items[i]
 
+            initial_index = belongsTo[i]
             # Find out which cluster the document belongs to
-            index = classify(means, item)
-
-            clusterSizes[index] += 1
-            cSize = clusterSizes[index]
-
-            # Recalculate cluster centroid
-            means[index] = updateMean(cSize, means[index], item)
+            index = classify(centroids, item)
 
             if (index != belongsTo[i]):
                 noChange = False
+                belongsTo[i] = index
 
-            belongsTo[i] = index
+                if initial_index != -1:
+                    clusterSizes[initial_index] -= 1
+                clusterSizes[index] += 1
+
+            centroids[index] = updateMean(belongsTo, items, index)
 
         if (noChange):
             break
 
-    return means, belongsTo
+    return centroids, belongsTo
 
 
 def create_document_term_matrix(docs_text):
@@ -115,14 +120,15 @@ def runkmeans(parameters_file):
 
         boxes = module_1.run(imgs_dir + file, "", False)
         text = module_2.get_all_text_from_image(imgs_dir + file, boxes)
-        bag_of_words = create_bag_of_words(text)
+        processed_text = module_3.process_text(text)
+        bag_of_words = create_bag_of_words(processed_text)
         docs_text.append([file, bag_of_words])
 
     dt_matrix, order = create_document_term_matrix(docs_text)
 
     centroids = random.choices(dt_matrix[1:], k=k)
     means, belongsTo = calculateMeans(dt_matrix[1:], centroids)
-    
+
     output = [[] for i in range(k)]
 
     for i, cluster in enumerate(belongsTo):

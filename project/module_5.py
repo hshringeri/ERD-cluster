@@ -40,7 +40,7 @@ def calculateMeans(items, means, maxIterations=100000):
     clusterSizes = [0 for i in range(len(means))]
 
     # Specify the cluster each document belongs to
-    belongsTo = [0 for i in range(len(items))]
+    belongsTo = [-1 for i in range(len(items))]
 
     print("Calculating k-means++...")
     for e in range(maxIterations):
@@ -48,19 +48,19 @@ def calculateMeans(items, means, maxIterations=100000):
         for i in range(len(items)):
             item = items[i]
 
+            initial_index = belongsTo[i]
             # Find out which cluster the document belongs to
             index = classify(means, item)
 
-            clusterSizes[index] += 1
-            cSize = clusterSizes[index]
-
-            # Recalculate cluster centroid
-            means[index] = updateMean(cSize, means[index], item)
-
             if (index != belongsTo[i]):
                 noChange = False
+                belongsTo[i] = index
 
-            belongsTo[i] = index
+                if initial_index != -1:
+                    clusterSizes[initial_index] -= 1
+                clusterSizes[index] += 1
+
+                means[index] = updateMean(clusterSizes[index], means[index], item)
 
         if (noChange):
             break
