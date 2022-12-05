@@ -1,6 +1,7 @@
 env
 .git_token
-Stage_1/__pycache__/
+project/__pycache__
 .venv
 .conda
 AWS_ENV
+parameters.txt

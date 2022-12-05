@@ -11,6 +11,11 @@ def process_text(texts):
     for i in range(len(texts)):
         texts[i][1] = texts[i][1].replace("_", " ")
         texts[i][1] = texts[i][1].replace("-", " ")
+        texts[i][1] = texts[i][1].replace(",", "")
+        texts[i][1] = texts[i][1].replace(".", "")
+        texts[i][1] = texts[i][1].replace("\"", "")
+        texts[i][1] = texts[i][1].replace("\'", "")
+
         text_tokens = word_tokenize(texts[i][1])
         tokens_without_sw = [ps.stem(word) for word in text_tokens if not word in stopwords.words() and not word == "PK"]
 
