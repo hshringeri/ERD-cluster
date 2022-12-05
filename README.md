@@ -9,9 +9,10 @@
 5. You need to have an AWS account and have an [access key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-about)
 
 ### Running the project
-While in the project's root directory, run 'AWS_ACCESS_KEY_ID="YOUR_ACCESS_KEY" AWS_SECRET_ACCESS_KEY="YOUR_SECRET_KEY" python3 ./project/project.py':
-    i. It will prompt you to choose a module to run.
-    ii. Then, it will prompt for a path to an image or a path to `parameters.txt` relative to the project's root directory.
+While in the project's root directory, you can run it using this command: `AWS_ACCESS_KEY_ID="YOUR_ACCESS_KEY" AWS_SECRET_ACCESS_KEY="YOUR_SECRET_KEY" python3 ./project/project.py`:
+
+1. It will prompt you to choose a module to run.
+2. Then, it will prompt for a path to an image or a path to `parameters.txt` relative to the project's root directory.
 
 ### Project structure
 The folder `/project/` contains all of the required Python files for Stage 1 of the project:
