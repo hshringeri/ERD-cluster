@@ -5,9 +5,11 @@ import boto3
 import uuid
 import os
 
+
 def get_text_with_textract(img_path, object_coords):
     img = cv2.imread(img_path)
-    object_texts = [[coord[0], coord[5], ""] for coord in object_coords]
+    object_texts = [[coord[0], coord[5], ""] if not (coord[0] == "entity" or coord[0] == "weakentity") else [
+        coord[0], coord[5], {"Title": "", "Text": ""}] for coord in object_coords]
 
     with open(img_path, 'rb') as document:
         imageBytes = bytearray(document.read())
@@ -24,10 +26,20 @@ def get_text_with_textract(img_path, object_coords):
             if not object_id == None:
                 for i, object in enumerate(object_texts):
                     if str(object[1]) == str(object_id):
-                        object_texts[i][2] += item["Text"] + " "
+                        if object_texts[i][0] == "entity" or object_texts[i][0] == "weakentity":
+                            if object_texts[i][2]["Title"] == "":
+                                object_texts[i][2]["Title"] += item["Text"]
+                            else:
+                                object_texts[i][2]["Text"] += item["Text"] + " "
+                        else:
+                            object_texts[i][2] += item["Text"] + " "
                         break
 
-    return [[object[0], object[2][:len(object[2])//2].strip()] for object in object_texts]
+    return [[object[0], object[2][:len(object[2])//2].strip()]
+            if not (object[0] == "entity" or object[0] == "weakentity") else
+            [object[0], {"Title": object[2]["Title"],
+                         "Text": object[2]["Text"][:(len(object[2]["Text"])-len(object[2]["Title"]))//2].strip()}]
+            for object in object_texts]
 
 
 def match_text_with_object(text_coord, object_coords):
