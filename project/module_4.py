@@ -66,6 +66,17 @@ def runkmeans(parameters_file):
 
     dt_matrix, order = create_document_term_matrix(docs_text)
 
+    if k == 0:
+        prev_score = -sys.maxsize - 1
+        for i in range(2, len(dt_matrix[1:]) - 1):
+            kmean = KMeans(n_clusters=i)
+            kmean.fit(numpy.array(dt_matrix[1:]))
+            label = kmean.predict(dt_matrix[1:])
+            score = silhouette_score(dt_matrix[1:], label)
+            if score > prev_score:
+                prev_score = score
+                k = i
+
     kmean = KMeans(n_clusters=k)
     kmean.fit(numpy.array(dt_matrix[1:]))
     kmean.labels_
@@ -74,6 +85,8 @@ def runkmeans(parameters_file):
 
     for i, cluster in enumerate(kmean.labels_):
         output[cluster].append(order[i])
+
+    print("Clustering is outputed to base_line_clusters.txt where k=" + str(k))
 
     with open("base_line_clusters.txt", "w") as output_file:
         for files in output:

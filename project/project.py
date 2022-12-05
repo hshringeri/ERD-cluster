@@ -52,7 +52,6 @@ def main():
         print(processed_text)
     elif MODULE == "4":
         module_4.runkmeans(PARAMETERS_FILE_PATH)
-        print("Clustering is outputed to base_line_clusters.txt")
     elif MODULE == "5":
         module_5.runkmeans(PARAMETERS_FILE_PATH)
         print("Clustering is outputed to advanced_clusters.txt")
