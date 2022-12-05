@@ -3,7 +3,6 @@ import sys
 import os
 import module_1
 import module_2
-import module_3
 import random
 
 def euclideanDistance(x, y):
@@ -92,8 +91,12 @@ def create_document_term_matrix(docs_text):
 def create_bag_of_words(text):
     bag_of_words = ""
     for object in text:
-        bag_of_words += object[1] + " "
-    
+        if object[0] == "entity" or object[0] == "weakentity":
+            bag_of_words += object[1]["Title"] + " "
+            bag_of_words += object[1]["Text"] + " "
+        else:
+            bag_of_words += object[1] + " "
+
     return bag_of_words.strip()
 
 

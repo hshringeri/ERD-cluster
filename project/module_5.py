@@ -3,7 +3,6 @@ import sys
 import os
 import module_1
 import module_2
-import module_3
 import random
 
 def euclideanDistance(x, y):
