@@ -8,13 +8,6 @@ import random
 import numpy
 import copy
 
-# def euclideanDistance(x, y):
-#     S = 0
-#     for i in range(len(x)):
-#         S += math.pow(x[i]-y[i], 2)
-
-#     return math.sqrt(S)
-
 
 def updateCentroids(belongsTo, items, k):
     clusters = [[] for i in range(k)]
@@ -22,8 +15,8 @@ def updateCentroids(belongsTo, items, k):
     for i in range(len(belongsTo)):
         clusters[belongsTo[i]].append(items[i])
 
-    new_centroids = [numpy.mean(numpy.array(cluster), axis=0).tolist() if len(cluster) > 0 else random.choice(items) for cluster in clusters]
-    print(new_centroids)
+    new_centroids = [numpy.mean(numpy.array(cluster), axis=0).tolist() if len(
+        cluster) > 0 else random.choice(items) for cluster in clusters]
 
     return new_centroids
 
@@ -43,32 +36,36 @@ def classify(centroids, item):
 
 
 def calculateMeans(items, centroids, maxIterations=100000):
-    # Specify the cluster each document belongs to
     belongsTo = [-1 for i in range(len(items))]
+    iterations = 0
+    old_centroids = None
 
-    print("Initial cluster centroids: {}".format(centroids))
-    print("Calculating k-means++...")
-    for e in range(maxIterations):
+    print("Calculating clusters using k-means++...")
+
+    while not should_stop(old_centroids, centroids, iterations, maxIterations):
+        iterations += 1
+        old_centroids = copy.deepcopy(centroids)
+
         for i in range(len(items)):
             belongsTo[i] = classify(centroids, items[i])
-            print("Assigned document #{} to cluster #{}".format(i, belongsTo[i]))
 
-        old_centroids = copy.deepcopy(centroids)
         centroids = updateCentroids(belongsTo, items, len(centroids))
-
-        print("Cluster assignments for each document: {}".format(belongsTo))
-        if (should_stop(old_centroids, centroids)):
-            break
 
     return centroids, belongsTo
 
 
-def should_stop(old_centroids, centroids):
+def should_stop(old_centroids, centroids, iterations, maxIterations):
+    if iterations > maxIterations:
+        return True
+    if old_centroids == None:
+        return False
+
     for i in range(len(old_centroids)):
         for j in range(len(old_centroids[i])):
             if not math.isclose(old_centroids[i][j], centroids[i][j]):
-                return True
-    return False
+                return False
+    return True
+
 
 def create_document_term_matrix(docs_text):
     all_text = ""
@@ -83,8 +80,10 @@ def create_document_term_matrix(docs_text):
         vector = [0 for i in range(len(unique_words))]
 
         for i, word in enumerate(unique_words):
-            if i == 0: continue
-            vector[i] = 0 if doc[1].count(word) == 0 else math.log(doc[1].count(word)) + 1
+            if i == 0:
+                continue
+            vector[i] = 0 if doc[1].count(
+                word) == 0 else math.log(doc[1].count(word)) + 1
         dt_matrix.append(vector)
 
     return dt_matrix, [doc[0] for doc in docs_text]
@@ -130,7 +129,7 @@ def runkmeans(parameters_file):
 
     for i, cluster in enumerate(belongsTo):
         output[cluster].append(order[i])
-    
+
     with open("base_line_clusters.txt", "w") as output_file:
         for files in output:
             output_file.write(" ".join(files) + "\n")
