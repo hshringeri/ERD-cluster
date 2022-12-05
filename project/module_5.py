@@ -45,7 +45,7 @@ def create_document_term_matrix_2(labels, order, images_ids, k):
     return dt_matrix, [file[1] for file in images_ids]
 
 
-def runkmeans(parameters_file):
+def runkmeans(parameters_file, output_to_file):
     parameters_file = open(parameters_file, 'r')
     parameters_file_contents = parameters_file.readlines()
 
@@ -109,8 +109,11 @@ def runkmeans(parameters_file):
     for i, cluster in enumerate(kmean.labels_):
         output[cluster].append(order_2[i])
 
-    print("Clustering is outputed to advanced_clusters.txt where k=" + str(k))
+    if output_to_file:
+        print("Clustering is outputed to advanced_clusters.txt where k=" + str(k))
 
-    with open("advanced_clusters.txt", "w") as output_file:
-        for files in output:
-            output_file.write(" ".join(files) + "\n")
+        with open("advanced_clusters.txt", "w") as output_file:
+            for files in output:
+                output_file.write(" ".join(files) + "\n")
+
+    return kmean.labels_

@@ -45,7 +45,7 @@ def create_bag_of_words(text):
     return bag_of_words.strip()
 
 
-def runkmeans(parameters_file):
+def runkmeans(parameters_file, output_to_file):
     parameters_file = open(parameters_file, 'r')
     parameters_file_contents = parameters_file.readlines()
 
@@ -85,8 +85,11 @@ def runkmeans(parameters_file):
     for i, cluster in enumerate(kmean.labels_):
         output[cluster].append(order[i])
 
-    print("Clustering is outputed to base_line_clusters.txt where k=" + str(k))
+    if output_to_file:
+        print("Clustering is outputed to base_line_clusters.txt where k=" + str(k))
 
-    with open("base_line_clusters.txt", "w") as output_file:
-        for files in output:
-            output_file.write(" ".join(files) + "\n")
+        with open("base_line_clusters.txt", "w") as output_file:
+            for files in output:
+                output_file.write(" ".join(files) + "\n")
+
+    return kmean.labels_
