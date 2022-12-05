@@ -79,7 +79,6 @@ def runkmeans(parameters_file):
 
     kmean = KMeans(n_clusters=k)
     kmean.fit(numpy.array(dt_matrix[1:]))
-    kmean.labels_
 
     output = [[] for i in range(k)]
 
